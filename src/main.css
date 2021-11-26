@@ -89,6 +89,7 @@ body {
   flex-direction: row;
   justify-content: center;
   position: relative;
+  margin-bottom: 25px;
 }
 
 .form-label{
@@ -96,15 +97,11 @@ body {
   padding: auto
 }
 
-.form-group-input-error{
-  position: relative;
-  margin-bottom: 25px;
-}
 
 .form-error-message{
-  display:none;
   position: absolute;
   right: 10px;
+  bottom: -16px;
   font-size: .7rem;
   color: red;
 }
