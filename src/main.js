@@ -11,28 +11,31 @@ const email2SignUp = document.getElementById("email2-input-signup");
 const usernameSignIn = document.getElementById("login-input-signin");
 const passwordSignIn = document.getElementById("pass-input-signin");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.querySelector("#login");
-  const registerForm = document.querySelector("#register");
+const login = document.querySelector("#login");
+const register = document.querySelector("#register");
+const logout = document.querySelector("#wyloguj");
+var loggedIn = false;
 
-  document.querySelector("#linkLogin").addEventListener("click", (e) => {
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector("#logowanie").addEventListener("click", (e) => {
     e.preventDefault();
-    registerForm.classList.add("form-hidden");
-    loginForm.classList.remove("form-hidden");
-    document.getElementById("linkLogin").style.display = "none";
-    document.getElementById("linkRegister").style.display = "block";
+    register.classList.add("form-hidden");
+    login.classList.remove("form-hidden");
+    document.getElementById("logowanie").style.display = "none";
+    document.getElementById("rejestracja").style.display = "block";
   });
-  document.querySelector("#linkRegister").addEventListener("click", (e) => {
+  document.querySelector("#rejestracja").addEventListener("click", (e) => {
     e.preventDefault();
-    loginForm.classList.add("form-hidden");
-    registerForm.classList.remove("form-hidden");
-    document.getElementById("linkRegister").style.display = "none";
-    document.getElementById("linkLogin").style.display = "block";
+    login.classList.add("form-hidden");
+    register.classList.remove("form-hidden");
+    document.getElementById("rejestracja").style.display = "none";
+    document.getElementById("logowanie").style.display = "block";
   });
 
   formLog.addEventListener("submit", (e) => {
     e.preventDefault();
     validateLoginForm();
+    document.querySelector(".form-msgBox").classList.remove(".form-hidden");
   });
 
   formReg.addEventListener("submit", (e) => {
@@ -59,6 +62,36 @@ function validateLoginForm() {
   } else {
     errorFor("remove", passwordSignIn, "");
   }
+
+  usersData = JSON.parse(sessionStorage.getItem("users"))
+    ? JSON.parse(sessionStorage.getItem("users"))
+    : [];
+
+  if (
+    usersData.some((v) => {
+      return v.username != usernameVal;
+    }) ||
+    usersData.some((v) => {
+      return v.password != passwordVal;
+    }) ||
+    sessionStorage.lenth == 0
+  ) {
+    const temp1 = document.querySelector(".form-msgBox");
+    temp1.classList.remove("form-hidden");
+  } else {
+    document.getElementById("rejestracja").style.display = "none";
+    document.getElementById("logowanie").style.display = "none";
+    login.classList.add("form-hidden");
+    register.classList.add("form-hidden");
+
+    for (let i = 0; i < usersData.length; i++) {
+      if (usersData[i].username == usernameVal) {
+        loggedInView();
+      }
+    }
+    console.log(usersData.hasOwnProperty(0));
+    
+  }
 }
 
 /*
@@ -70,10 +103,14 @@ function validateSignUpForm() {
   var emailVal = emailSignUp.value.trim();
   var email2Val = email2SignUp.value.trim();
 
+  var usersData = [{}];
+
   checkUsername(usernameVal);
   checkPassword(passwordVal);
   checkEmail(emailVal);
   checkEmail2(emailVal, email2Val);
+
+  confirmSubmition();
 
   function checkUsername(usernameVal) {
     // function checks username field
@@ -94,9 +131,6 @@ function validateSignUpForm() {
     }
   }
 
-  if(checkUsername(usernameVal)){
-    console.log("coscos");
-  }
   function checkPassword(passwordVal) {
     // function checks password field
 
@@ -106,6 +140,7 @@ function validateSignUpForm() {
       errorFor("set", passwordSignUp, "Hasło musi mieć co najmniej 6 znaków");
     } else {
       errorFor("remove", passwordSignUp, "");
+      return true;
     }
   }
 
@@ -120,6 +155,7 @@ function validateSignUpForm() {
       errorFor("set", emailSignUp, "Błędny format");
     } else {
       errorFor("remove", emailSignUp, "");
+      return true;
     }
   }
 
@@ -136,6 +172,42 @@ function validateSignUpForm() {
       );
     } else {
       errorFor("remove", email2SignUp, "");
+      return true;
+    }
+  }
+
+  function confirmSubmition() {
+    if (
+      checkUsername(usernameVal) &&
+      checkPassword(passwordVal) &&
+      checkEmail(emailVal) &&
+      checkEmail2(emailVal, email2Val)
+    ) {
+      usersData = JSON.parse(sessionStorage.getItem("users"))
+        ? JSON.parse(sessionStorage.getItem("users"))
+        : [];
+
+      if (
+        usersData.some((v) => {
+          return v.username == usernameVal;
+        })
+      ) {
+        alert("Taki użytkownik już istnieje!");
+      } else if (
+        usersData.some((v) => {
+          return v.email == email2Val;
+        })
+      ) {
+        alert("Konto o takim email już istnieje!");
+      } else {
+        usersData.push({
+          username: usernameVal,
+          password: passwordVal,
+          email: email2Val,
+        });
+        sessionStorage.setItem("users", JSON.stringify(usersData));
+        document.getElementById("register").reset();
+      }
     }
   }
 }
@@ -153,4 +225,9 @@ function errorFor(action, input, message) {
   } else if (action === "remove") {
     errorTag.classList.add("form-hidden");
   }
+}
+
+function loggedInView() {
+  document.getElementById("wyloguj").style.display = "block";
+  window.location.replace("../loggedIn.html");
 }

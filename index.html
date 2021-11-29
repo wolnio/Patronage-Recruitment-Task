@@ -2,7 +2,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
-  <title>My login web</title>
+  <title>Strona główna</title>
   <link rel="stylesheet" href="./src/main.css" />
   <link
     href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap"
@@ -12,8 +12,13 @@
 <body>
   <div class="container">
     <div class="topnav">
-      <a href="#signin" id="linkLogin">Logowanie</a>
-      <a href="#signup" id="linkRegister">Rejestracja</a>
+      <ul>
+        <li><a href="#signin" id="logowanie">Logowanie</a></li>
+        <li><a href="#signup" id="rejestracja">Rejestracja</a></li>
+        <li><div id="usernameNavbar"></div></li>
+        <li><a href="#logout" id="wyloguj" style="display: none;">Wyloguj</a></li>
+      </ul>
+        
     </div>
     <div class="middle-container">
       <!-- <div class="welcome">
@@ -22,9 +27,26 @@
       </div> -->
 
       <!-- LOGOWANIE -->
+      
       <form class="form-container form-hidden" id="login">
         <h1 class="form-title">Logowanie</h1>
         <div class="form-group">
+          <div class="form-msgBox form-hidden">
+            <div class="msgBoxIcon">
+              <img
+                class="messageIcon"
+                src="src//img/iconError.svg"
+                alt=""
+                style="
+                  max-width: 18px;
+                  width: 100%;
+                  max-height: 18px;
+                  height: auto;
+                "
+              />
+            </div>
+            <div class="msgBoxText">Nieprawidłowa nazwa użytkownika lub hasło</div>
+          </div>
           <div class="form-input-group">
             <label for="login-input" class="form-label"
               >Nazwa użytkownika</label

@@ -16,24 +16,32 @@ body {
   color: #fff;
 }
 
-.topnav {
+.topnav ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   background-color: #333;
-  display: flex;
+}
+
+.topnav ul li:nth-last-child(-n + 2) {
+  float: right;
 }
 
 .topnav a {
-  float: left;
   color: #f2f2f2;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  float:left;
 }
 
 .topnav a:hover {
   background-color: #ddd;
   color: black;
 }
+
 
 .middle-container {
   position: absolute;
@@ -45,8 +53,36 @@ body {
   text-transform: uppercase;
 }
 
-.form-hidden{
-  display: none;
+.form-hidden {
+  display: none !important;
+}
+
+
+
+.form-msgBox {
+  margin-bottom: 25px;
+  padding: 13px;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  clear: both;
+  border: 1px solid #ff5033;
+  border-radius: 10px;
+  font-size: 11px;
+  display: flex;
+  flex-direction: row;
+}
+
+.msgBoxIcon {
+  width: 18px;
+  position: absolute;
+  top: 13px;
+  left: 13px;
+}
+
+.msgBoxText {
+  float: left;
+  margin: 0 10px 0 32px;
 }
 
 .form-container {
@@ -60,22 +96,22 @@ body {
   color: #000;
 }
 
-.form-container > *:first-child{
+.form-container > *:first-child {
   margin-top: 0;
 }
 
-.form-container > *:last-child{
+.form-container > *:last-child {
   margin-bottom: 0;
 }
 
-.form-group label{
-  width:25%;
+.form-group label {
+  width: 25%;
   text-align: right;
   font-size: 12px;
   margin: auto;
 }
 
-.form-group input{
+.form-group input {
   width: 65%;
   height: 35px;
   padding: 0 8px;
@@ -84,7 +120,7 @@ body {
   border-width: 1px;
 }
 
-.form-input-group{
+.form-input-group {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -92,21 +128,20 @@ body {
   margin-bottom: 25px;
 }
 
-.form-label{
+.form-label {
   width: 120px;
-  padding: auto
+  padding: auto;
 }
 
-
-.form-error-message{
+.form-error-message {
   position: absolute;
   right: 10px;
   bottom: -16px;
-  font-size: .7rem;
+  font-size: 0.7rem;
   color: red;
 }
 
-.form-button{
+.form-button {
   padding: 1rem 1rem;
   width: 40%;
   font-size: 20px;
@@ -117,10 +152,10 @@ body {
   background: rgb(21, 208, 236);
 }
 
-.form-button:hover{
+.form-button:hover {
   background: rgb(12, 126, 144);
 }
 
-p{
-  margin:0;
+p {
+  margin: 0;
 }
