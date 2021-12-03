@@ -13,31 +13,34 @@ const passwordSignIn = document.getElementById("pass-input-signin");
 
 const login = document.querySelector("#login");
 const register = document.querySelector("#register");
-const logout = document.querySelector("#wyloguj");
-var loggedIn = false;
+const welcomeText = document.querySelector(".welcome");
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#logowanie").addEventListener("click", (e) => {
     e.preventDefault();
     register.classList.add("form-hidden");
     login.classList.remove("form-hidden");
+    welcomeText.classList.add("form-hidden");
     document.getElementById("logowanie").style.display = "none";
     document.getElementById("rejestracja").style.display = "block";
   });
+
   document.querySelector("#rejestracja").addEventListener("click", (e) => {
     e.preventDefault();
     login.classList.add("form-hidden");
     register.classList.remove("form-hidden");
+    welcomeText.classList.add("form-hidden");
     document.getElementById("rejestracja").style.display = "none";
     document.getElementById("logowanie").style.display = "block";
   });
 
+  //when login form is submitted
   formLog.addEventListener("submit", (e) => {
     e.preventDefault();
     validateLoginForm();
-    document.querySelector(".form-msgBox").classList.remove(".form-hidden");
   });
 
+  //when register form is submitted
   formReg.addEventListener("submit", (e) => {
     e.preventDefault();
     validateSignUpForm();
@@ -51,46 +54,31 @@ function validateLoginForm() {
   var usernameVal = usernameSignIn.value.trim();
   var passwordVal = passwordSignIn.value.trim();
 
-  if (usernameVal === "") {
-    errorFor("set", usernameSignIn, "Nazwa użytkownika nie może być pusta");
-  } else {
-    errorFor("remove", usernameSignIn, "");
-  }
-
-  if (passwordVal === "") {
-    errorFor("set", passwordSignIn, "Hasło nie może być puste");
-  } else {
-    errorFor("remove", passwordSignIn, "");
-  }
-
+  // if dataUsers is not empty then parse all of the data from session storage
+  // and if its emty then create new empty array
   usersData = JSON.parse(sessionStorage.getItem("users"))
     ? JSON.parse(sessionStorage.getItem("users"))
     : [];
 
   if (
-    usersData.some((v) => {
-      return v.username != usernameVal;
-    }) ||
-    usersData.some((v) => {
-      return v.password != passwordVal;
-    }) ||
-    sessionStorage.lenth == 0
+    !usersData.some((v) => {
+      //check if user even exist
+      return v.username == usernameVal;
+    })
   ) {
-    const temp1 = document.querySelector(".form-msgBox");
-    temp1.classList.remove("form-hidden");
+    errorFor("set", usernameSignIn, "Nie ma takiego użytkownika");
   } else {
-    document.getElementById("rejestracja").style.display = "none";
-    document.getElementById("logowanie").style.display = "none";
-    login.classList.add("form-hidden");
-    register.classList.add("form-hidden");
-
     for (let i = 0; i < usersData.length; i++) {
       if (usersData[i].username == usernameVal) {
-        loggedInView();
+        errorFor("remove", usernameSignIn, "Nie ma takiego użytkownika");
+        if (usersData[i].password == passwordVal) {
+          sessionStorage.setItem("userId", i); // set the ID of logged user
+          self.location="loggedIn.html";    // redirect user to a logged view page
+        } else {
+          errorFor("set", passwordSignIn, "Niepoprawne hasło");
+        }
       }
     }
-    console.log(usersData.hasOwnProperty(0));
-    
   }
 }
 
@@ -103,7 +91,9 @@ function validateSignUpForm() {
   var emailVal = emailSignUp.value.trim();
   var email2Val = email2SignUp.value.trim();
 
-  var usersData = [{}];
+  usersData = JSON.parse(sessionStorage.getItem("users"))
+    ? JSON.parse(sessionStorage.getItem("users"))
+    : [];
 
   checkUsername(usernameVal);
   checkPassword(passwordVal);
@@ -116,15 +106,27 @@ function validateSignUpForm() {
     // function checks username field
 
     if (usernameVal === "") {
+      //check if empty input
       errorFor("set", usernameSignUp, "Nazwa użytkownika nie może być pusta");
     } else if (usernameVal.length < 6 || usernameVal.length > 20) {
+      // check the length of input
       errorFor(
         "set",
         usernameSignUp,
         "Nazwa użytkownika musi mieć 6 - 20 znaków"
       );
-    } else if (/^[a-zA-Z0-9]+$/.test(usernameVal) == false) {
+    } else if (/^[a-zA-Z0-9]+$/.test(usernameVal) == false) {   // this regex passes test on regexr.com -> /^[a-zA-Z0-9_/\\\-[\]]+$/
       errorFor("set", usernameSignUp, "Dozwolone znaki to litery i cyfry");
+    } else if (
+      usersData.some((v) => {
+        return v.username == usernameVal;
+      })
+    ) {
+      errorFor(
+        "set",
+        usernameSignUp,
+        "Użytkownik o takiej nazwie już istnieje"
+      );
     } else {
       errorFor("remove", usernameSignUp, "");
       return true;
@@ -153,6 +155,12 @@ function validateSignUpForm() {
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailVal) == false
     ) {
       errorFor("set", emailSignUp, "Błędny format");
+    } else if (
+      usersData.some((v) => {
+        return v.email == emailVal;
+      })
+    ) {
+      errorFor("set", emailSignUp, "Konto z takim email już istnieje");
     } else {
       errorFor("remove", emailSignUp, "");
       return true;
@@ -183,10 +191,6 @@ function validateSignUpForm() {
       checkEmail(emailVal) &&
       checkEmail2(emailVal, email2Val)
     ) {
-      usersData = JSON.parse(sessionStorage.getItem("users"))
-        ? JSON.parse(sessionStorage.getItem("users"))
-        : [];
-
       if (
         usersData.some((v) => {
           return v.username == usernameVal;
@@ -206,7 +210,9 @@ function validateSignUpForm() {
           email: email2Val,
         });
         sessionStorage.setItem("users", JSON.stringify(usersData));
-        document.getElementById("register").reset();
+        sessionStorage.setItem("userId", usersData.length - 1); // set the ID of logged user
+        self.location="loggedIn.html";    // redirect user to a logged view page
+        document.getElementById("register").reset();  //reset all register inputs
       }
     }
   }
@@ -225,9 +231,4 @@ function errorFor(action, input, message) {
   } else if (action === "remove") {
     errorTag.classList.add("form-hidden");
   }
-}
-
-function loggedInView() {
-  document.getElementById("wyloguj").style.display = "block";
-  window.location.replace("../loggedIn.html");
 }

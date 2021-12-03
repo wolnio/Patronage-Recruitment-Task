@@ -13,15 +13,22 @@
   <div class="container">
     <div class="topnav">
       <ul>
-        <li><a href="#signin" id="logowanie">Logowanie</a></li>
-        <li><a href="#signup" id="rejestracja">Rejestracja</a></li>
-        <li><div id="usernameNavbar"></div></li>
-        <li><a href="#logout" id="wyloguj" style="display: none;">Wyloguj</a></li>
+        <li>
+          <a href="#" id="wyloguj" style="float: right">Wyloguj</a>
+        </li>
+        <li>
+          <div class="userIcon" style="float: right">
+            <img
+              src="src//img/user-solid.svg"
+              alt=""
+            />
+            <div id="usernameNavbar" ></div>
+          </div>
+        </li>
       </ul>
-        
     </div>
-    <div class="middle-container">
-      
+    <div class="gallery-container">
+      <div class="gallery"></div>
     </div>
   </div>
   <script src="./src/loggedIn.js"></script>

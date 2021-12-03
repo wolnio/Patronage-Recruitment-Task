@@ -10,24 +10,21 @@
   />
 </head>
 <body>
+  <div class="topnav">
+    <ul>
+      <li><a href="#signin" id="logowanie">Logowanie</a></li>
+      <li><a href="#signup" id="rejestracja">Rejestracja</a></li>
+    </ul>
+  </div>
   <div class="container">
-    <div class="topnav">
-      <ul>
-        <li><a href="#signin" id="logowanie">Logowanie</a></li>
-        <li><a href="#signup" id="rejestracja">Rejestracja</a></li>
-        <li><div id="usernameNavbar"></div></li>
-        <li><a href="#logout" id="wyloguj" style="display: none;">Wyloguj</a></li>
-      </ul>
-        
-    </div>
     <div class="middle-container">
-      <!-- <div class="welcome">
+      <!-- TEXT POWITALNY -->
+      <div class="welcome">
         <h1>Witaj!</h1>
         <h3>Jeśli chcesz zobaczyć ciekawy formularz zarejestruj się!</h3>
-      </div> -->
+      </div>
 
       <!-- LOGOWANIE -->
-      
       <form class="form-container form-hidden" id="login">
         <h1 class="form-title">Logowanie</h1>
         <div class="form-group">
@@ -45,10 +42,12 @@
                 "
               />
             </div>
-            <div class="msgBoxText">Nieprawidłowa nazwa użytkownika lub hasło</div>
+            <div class="msgBoxText">
+              Error message
+            </div>
           </div>
           <div class="form-input-group">
-            <label for="login-input" class="form-label"
+            <label for="login-input-signin" class="form-label"
               >Nazwa użytkownika</label
             >
             <input type="text" class="form-input" id="login-input-signin" />
@@ -56,11 +55,10 @@
           </div>
 
           <div class="form-input-group">
-            <label for="pass-input" class="form-label">Hasło</label>
+            <label for="pass-input-signin" class="form-label">Hasło</label>
             <input type="password" class="form-input" id="pass-input-signin" />
             <p class="form-error-message form-hidden">Error message</p>
           </div>
-
           <button class="form-button" type="submit">Zaloguj</button>
         </div>
       </form>
@@ -71,7 +69,7 @@
 
         <div class="form-group">
           <div class="form-input-group">
-            <label for="login-input" class="form-label"
+            <label for="login-input-signup" class="form-label"
               >Nazwa użytkownika</label
             >
             <input type="text" class="form-input" id="login-input-signup" />
@@ -79,19 +77,21 @@
           </div>
 
           <div class="form-input-group">
-            <label for="pass-input" class="form-label">Hasło</label>
+            <label for="pass-input-signup" class="form-label">Hasło</label>
             <input type="password" class="form-input" id="pass-input-signup" />
             <p class="form-error-message form-hidden">Error message</p>
           </div>
 
           <div class="form-input-group">
-            <label for="email-input" class="form-label">Email</label>
+            <label for="email-input-signup" class="form-label">Email</label>
             <input type="text" class="form-input" id="email-input-signup" />
             <p class="form-error-message form-hidden">Error message</p>
           </div>
 
           <div class="form-input-group">
-            <label for="email2-input" class="form-label">Potwierdź email</label>
+            <label for="email2-input-signup" class="form-label"
+              >Potwierdź email</label
+            >
             <input type="text" class="form-input" id="email2-input-signup" />
             <p class="form-error-message form-hidden">Error message</p>
           </div>
